@@ -56,7 +56,7 @@ wedding-save-the-date/
 │   ├── layout.tsx        # Root layout with metadata
 │   └── globals.css       # Global styles with Tailwind
 ├── public/
-│   └── hero.jpg          # Hero image (placeholder - replace with actual image)
+│   └── images/           # Wedding photos and assets
 ├── .env.example          # Environment variables template
 ├── .gitignore            # Git ignore rules
 ├── next.config.ts        # Next.js configuration
@@ -64,6 +64,46 @@ wedding-save-the-date/
 ├── tsconfig.json         # TypeScript configuration
 └── README.md             # This file
 ```
+
+## Images
+
+All wedding photos and visual assets should be placed in the `/public/images` directory.
+
+### Recommended Filenames
+
+Place your real photos in `/public/images/` with these filenames:
+
+- **hero.jpg** - Main hero/background image for the welcome section (recommended: 1920x1080 or larger)
+- **couple-1.jpg** - First couple photo for additional sections
+- **couple-2.jpg** - Second couple photo for additional sections
+- **floral-left.png** - Decorative floral element (left side, transparent PNG)
+- **floral-right.png** - Decorative floral element (right side, transparent PNG)
+
+### How to Reference Images in Code
+
+All images in `/public/` can be referenced directly from the root path:
+
+```tsx
+// Example in JSX/TSX
+<img src="/images/hero.jpg" alt="Hero" />
+
+// Example with Next.js Image component
+import Image from 'next/image';
+<Image src="/images/couple-1.jpg" alt="Couple" width={800} height={600} />
+
+// Example as CSS background
+<div style={{ backgroundImage: "url('/images/hero.jpg')" }}>
+
+// Example with Tailwind CSS
+<div className="bg-[url('/images/hero.jpg')]">
+```
+
+### Tips
+
+- Use JPEG format for photos (smaller file size)
+- Use PNG format for graphics with transparency (florals, decorative elements)
+- Optimize images before uploading (compress to reduce load times)
+- Keep original aspect ratios to avoid distortion
 
 ## Features
 
