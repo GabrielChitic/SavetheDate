@@ -315,7 +315,7 @@ export default function Home() {
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/cand-banner.jpg')" }}
+          style={{ backgroundImage: "url('/images/Cand-banner.jpg')" }}
         >
           {/* Light overlay for readability */}
           <div className="absolute inset-0 bg-white/40"></div>
