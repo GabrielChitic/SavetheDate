@@ -1,0 +1,7 @@
+Replace this with your hero.jpg image file.
+
+The hero image should be:
+- Named: hero.jpg
+- Recommended size: 1920x1080 or larger
+- Format: JPG or PNG
+- Content: A beautiful photo of the couple or wedding-themed image
