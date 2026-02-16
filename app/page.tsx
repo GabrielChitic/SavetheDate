@@ -87,6 +87,78 @@ function Countdown({ targetDate }: { targetDate: string }) {
 }
 
 export default function Home() {
+  // RSVP Form State
+  const [attending, setAttending] = useState('');
+  const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
+  const [honeypot, setHoneypot] = useState(''); // Anti-spam field
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleRSVPSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Reset status
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    // Basic validation
+    if (!attending) {
+      setSubmitStatus('error');
+      setErrorMessage('Te rugăm să selectezi dacă vei participa');
+      return;
+    }
+
+    if (attending === 'yes' && !name.trim()) {
+      setSubmitStatus('error');
+      setErrorMessage('Te rugăm să introduci numele tău');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          attending,
+          name: name.trim(),
+          message: message.trim(),
+          website: honeypot, // Honeypot field
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.ok) {
+        setSubmitStatus('success');
+        // Reset form
+        setAttending('');
+        setName('');
+        setMessage('');
+      } else {
+        setSubmitStatus('error');
+        setErrorMessage(data.error || 'A apărut o eroare. Te rugăm să încerci din nou.');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      setErrorMessage('A apărut o eroare. Te rugăm să încerci din nou.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getSubmitButtonText = () => {
+    if (isSubmitting) return 'Se trimite...';
+    if (attending === 'yes') return 'Da, voi participa';
+    if (attending === 'no') return 'Nu, nu voi participa';
+    return 'Trimite răspunsul';
+  };
+
   return (
     <div className="min-h-screen">
       {/* Sticky Navigation */}
@@ -571,21 +643,39 @@ export default function Home() {
 
       {/* Confirmare Section */}
       <section id="confirmare" className="relative min-h-screen flex items-center justify-center bg-gray-50 py-16 md:py-20 lg:py-24">
+        {/* Left Decoration - Hidden on mobile */}
+        <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-8 z-0">
+          <img
+            src="/images/Confirm-left.png"
+            alt="Decorative seaside"
+            className="w-32 h-32 lg:w-40 lg:h-40 opacity-60"
+          />
+        </div>
+
+        {/* Right Decoration - Hidden on mobile */}
+        <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-8 z-0">
+          <img
+            src="/images/Confirm-right.png"
+            alt="Decorative seaside"
+            className="w-32 h-32 lg:w-40 lg:h-40 opacity-60"
+          />
+        </div>
+
         {/* Center Card */}
         <div className="relative z-10 container mx-auto px-6">
-          <div className="relative max-w-[720px] mx-auto bg-white rounded-lg shadow-xl px-6 py-12 md:px-10 md:py-16 lg:px-12 lg:py-20">
+          <div className="relative max-w-[640px] mx-auto bg-white rounded-lg shadow-xl px-6 py-12 md:px-10 md:py-16 lg:px-12 lg:py-20">
 
             {/* Leaf Icon */}
             <div className="flex justify-center mb-6">
               <img
                 src="/images/leaf-icon.png"
                 alt="Leaf decoration"
-                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28"
+                className="w-20 h-20 md:w-24 md:h-24"
               />
             </div>
 
             {/* Title */}
-            <h2 className="text-[32px] md:text-[40px] leading-tight font-light tracking-wide text-slate-800 uppercase text-center mb-6">
+            <h2 className="text-[32px] md:text-[40px] leading-tight font-light tracking-wide text-slate-800 uppercase text-center mb-4">
               Formular de confirmare
             </h2>
 
@@ -594,19 +684,107 @@ export default function Home() {
               Te așteptăm cu drag!
             </p>
 
-            {/* Microsoft Form Iframe */}
-            <div className="w-full">
-              <iframe
-                src="https://forms.office.com/Pages/ResponsePage.aspx?id=Kj012FOxF02IJ5AsUfcjV8dsLyfPG1hLjXg9BP3xkzlURTU5S1o0MTdCUjFOMzhLQUoxWEsxOEZQNS4u&embed=true"
-                title="Microsoft Form Confirmare"
-                frameBorder="0"
-                marginWidth={0}
-                marginHeight={0}
-                style={{ border: "none", maxWidth: "100%", maxHeight: "100vh" }}
-                allowFullScreen
-                className="w-full min-h-[700px] md:min-h-[800px]"
-              ></iframe>
-            </div>
+            {/* Success Message */}
+            {submitStatus === 'success' ? (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-6">
+                  <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-[24px] md:text-[28px] font-normal text-slate-800 mb-3">
+                  Mulțumim!
+                </h3>
+                <p className="text-[16px] md:text-[17px] text-slate-600 leading-relaxed">
+                  Răspunsul tău a fost înregistrat.
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* RSVP Form */}
+                <form onSubmit={handleRSVPSubmit} className="space-y-6">
+
+                  {/* Question 1: Participi? */}
+                  <div>
+                    <label htmlFor="attending" className="block text-[15px] md:text-[16px] font-medium text-slate-700 mb-2">
+                      Participi? <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="attending"
+                      value={attending}
+                      onChange={(e) => setAttending(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[15px] md:text-[16px] text-slate-700 bg-white"
+                      required
+                    >
+                      <option value="">Selectează o opțiune</option>
+                      <option value="yes">Da, voi participa</option>
+                      <option value="no">Nu particip</option>
+                    </select>
+                  </div>
+
+                  {/* Question 2: Numele tău */}
+                  <div>
+                    <label htmlFor="name" className="block text-[15px] md:text-[16px] font-medium text-slate-700 mb-2">
+                      Numele tău {attending === 'yes' && <span className="text-red-500">*</span>}
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Numele și prenumele"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[15px] md:text-[16px] text-slate-700"
+                      required={attending === 'yes'}
+                    />
+                  </div>
+
+                  {/* Question 3: Message / Alergii / Preferințe */}
+                  <div>
+                    <label htmlFor="message" className="block text-[15px] md:text-[16px] font-medium text-slate-700 mb-2">
+                      Mesaj / alergii / preferințe meniu (opțional)
+                    </label>
+                    <textarea
+                      id="message"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="ex: alergii, preferințe meniu, un mesaj pentru noi"
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[15px] md:text-[16px] text-slate-700 resize-none"
+                    />
+                  </div>
+
+                  {/* Honeypot field (hidden from users) */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    className="absolute opacity-0 pointer-events-none"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+
+                  {/* Error Message */}
+                  {submitStatus === 'error' && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <p className="text-[14px] md:text-[15px] text-red-700">
+                        {errorMessage}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !attending}
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-lg transition-colors text-[15px] md:text-[16px] uppercase tracking-wide"
+                  >
+                    {getSubmitButtonText()}
+                  </button>
+
+                </form>
+              </>
+            )}
 
           </div>
         </div>
