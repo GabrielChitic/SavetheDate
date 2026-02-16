@@ -224,7 +224,7 @@ export default function Home() {
         {/* Top Left - Date (Hidden on very small screens) */}
         <div className="hidden sm:block absolute top-20 sm:top-24 left-4 sm:left-6 md:left-12">
           <p className="text-[13px] sm:text-[15px] md:text-[17px] text-slate-600">
-            31 August 2026
+            30 August 2026
           </p>
         </div>
 
@@ -649,7 +649,7 @@ export default function Home() {
                   900001 Constanța
                 </p>
                 <p>
-                  Duminică, 31 August 2026<br />
+                  Duminică, 30 August 2026<br />
                   Ora 16:00
                 </p>
               </div>
