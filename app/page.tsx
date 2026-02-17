@@ -501,28 +501,33 @@ export default function Home() {
               {/* Story Text - Professional dark blue for readability */}
               <div className="max-w-2xl text-[#2C4F5E] text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] leading-[1.7] sm:leading-[1.8]">
                 <p className="mb-5">
-                  Dintr-a șasea clasă ne-am văzut — și ne-a rămas în minte,
-                  ca un "poate" de atunci, păstrat cumva cuminte.
+                  Dintr-a șasea clasă ne-am văzut — și ne-a rămas în minte,<br />
+                  ca un „poate" de atunci, păstrat cumva cuminte.
                 </p>
 
                 <p className="mb-5">
-                  Pe 7 ianuarie, la un cocktail, ne-am prins dintr-odată;
-                  trei-patru baruri, mult râs — și "noi doi" a fost treaba clară.
+                  Pe 7 ianuarie, la un cocktail, ne-am prins dintr-odată;<br />
+                  trei-patru baruri, mult râs — și „noi doi" a fost treaba clară.
                 </p>
 
                 <p className="mb-5">
-                  Kemer: soare, all-inclusive și "încă puțin" până târziu,
-                  Etna: schi pe vulcan — da, suntem cuplul ăla… un pic "hai-hui".
+                  Kemer: prima vacanță — soare, all-inclusive și vibe bun între noi,<br />
+                  unde ne-am apropiat firesc, fără grabă, doar în doi.
                 </p>
 
                 <p className="mb-5">
-                  Tenerife: vin și fructe de mare — și marea ne-a luat de mână,
-                  Madeira ne-a ținut de val… iar în Paxos, pe scuter, pe-o plajă bună,
+                  Etna: schi pe vulcan — puțin curaj, puțin „wow", multă bucurie,<br />
+                  și ne-am dat seama încă o dată cât de bine ne e împreună.
+                </p>
+
+                <p className="mb-5">
+                  Tenerife: vin și fructe de mare — și marea ne-a luat de mână,<br />
+                  Madeira ne-a ținut pe val… iar în Paxos, pe scuter, pe-o plajă bună,
                 </p>
 
                 <p>
-                  am zis un „DA" simplu și mare — fără discurs, fără decor:
-                  și mergem mai departe împreună, cu mult râs… și mult dor de ocean, pe scurt: cu amor.
+                  am zis un „DA" simplu și mare — fără discurs, fără decor;<br />
+                  și mergem mai departe împreună, cu mult râs… și dor de ocean: pe scurt, cu amor.
                 </p>
               </div>
             </div>
